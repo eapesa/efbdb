@@ -1,0 +1,20 @@
+{application, efbdb,
+ [{description, "An OTP library"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { efbdb_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    crypto,
+    ssl,
+    shotgun,
+    jsx
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
