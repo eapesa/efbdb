@@ -86,7 +86,8 @@ handle_events(_FinNoFin, _Reference, Event) ->
       maps:get(data, ParsedEvent, <<>>)}).
 
 start_link(Host, Node, Opts) ->
-  gen_server:start_link({local, ?MODULE}, ?MODULE, [{Host, Node, Opts}], []).
+  % gen_server:start_link({local, ?MODULE}, ?MODULE, [{Host, Node, Opts}], []).
+  gen_server:start_link(?MODULE, [{Host, Node, Opts}], []).
 
 init([{Host, Node, Opts}]) ->
   Secret = utils:ensure_binary(maps:get(firebase_secret, Opts, <<"x">>)),
