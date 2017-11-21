@@ -56,7 +56,8 @@ connect(Host, Node, Opts) ->
       [?MODULE]
     },
   Ret = supervisor:start_child(efbdb_sup, ChildSpec),
-  io:format("[efbdb] Starting... ~p~n", [Ret]).
+  io:format("[efbdb] Starting... ~p~n", [Ret]),
+  Ret.
 
 add(Data) ->
   add(Data, <<"/">>).
