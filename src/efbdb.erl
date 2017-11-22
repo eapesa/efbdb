@@ -55,9 +55,7 @@ connect(Host, Node, Opts) ->
       worker,
       [?MODULE]
     },
-  Ret = supervisor:start_child(efbdb_sup, ChildSpec),
-  io:format("[efbdb] Starting... ~p~n", [Ret]),
-  Ret.
+  supervisor:start_child(efbdb_sup, ChildSpec).
 
 add(Data) ->
   add(Data, <<"/">>).
@@ -87,8 +85,7 @@ handle_events(_FinNoFin, _Reference, Event) ->
       maps:get(data, ParsedEvent, <<>>)}).
 
 start_link(Host, Node, Opts) ->
-  % gen_server:start_link({local, ?MODULE}, ?MODULE, [{Host, Node, Opts}], []).
-  gen_server:start_link(?MODULE, [{Host, Node, Opts}], []).
+  gen_server:start_link({local, ?MODULE}, ?MODULE, [{Host, Node, Opts}], []).
 
 init([{Host, Node, Opts}]) ->
   Secret = utils:ensure_binary(maps:get(firebase_secret, Opts, <<"x">>)),
@@ -112,7 +109,6 @@ handle_call({Verb, Path, Data}, _From, #state{ conn_http=Conn, node=Node,
     secret=Secret }=State) ->
   Uri      = utils:ensure_list(manage_path(Node, Path, Secret)),
   Params   = generate_http_params(Verb, Conn, Uri, Data),
-  % Response = shotgun:Verb(Conn, Uri, Headers, Body, #{}),
   Response = apply(shotgun, Verb, Params),
   {reply, Response, State};
 handle_call(_Message, _From, State) ->
@@ -141,7 +137,6 @@ handle_cast({open_conns, {ok, SseConn}, {ok, HttpConn}},
         <<"Cache-Control">> => <<"no-cache">>},
       #{async => true, async_mode => sse,
         handle_event=> fun ?MODULE:handle_events/3}),
-  io:format("[efbdb] Connecting to Firebase DB: ~p~n", [Result]),
   {noreply, State#state{ conn_sse=SseConn, conn_http=HttpConn }};
 handle_cast(_Message, State) ->
   {noreply, State}.
