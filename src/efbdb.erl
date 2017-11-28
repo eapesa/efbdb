@@ -10,7 +10,8 @@
   add_no_key/1,
   add_no_key/2,
   remove/0,
-  remove/1
+  remove/1,
+  update/2
 ]).
 %% GenServer CALLBACKS
 -export([
@@ -75,6 +76,9 @@ remove() ->
 remove(Path) ->
   gen_server:call(?MODULE, {delete, Path, maps:new()}).
 
+update(Data, Path) ->
+  gen_server:call(?MODULE, {patch, Path, Data}).
+
 %%====================================================================
 %% Internal functions
 %%====================================================================
@@ -101,7 +105,8 @@ init([{Host, Node, Opts}]) ->
     remove_callback = RemoveCallback
   }, 0}.
 
-terminate(_Reason, _State) -> ok.
+terminate(_Reason, _State) ->
+  ok.
 
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
@@ -132,7 +137,7 @@ handle_cast({event, Event, Data}, State) when (Event =:= <<"put">>);
 handle_cast({open_conns, {ok, SseConn}, {ok, HttpConn}},
     #state{ node=Node, secret=Secret }=State) ->
   Path     = manage_path(utils:ensure_binary(Node), Secret),
-  Result   = shotgun:get(SseConn, Path,
+  _Result  = shotgun:get(SseConn, Path,
       #{<<"Accept">> => <<"text/event-stream">>,
         <<"Cache-Control">> => <<"no-cache">>},
       #{async => true, async_mode => sse,
@@ -170,12 +175,12 @@ get_headers(_Verb) -> #{}.
 get_body(Verb, _Data) when (Verb =:= get); (Verb =:= delete) -> #{};
 get_body(_Verb, Data) -> jsx:encode(Data).
 
-generate_http_params(Verb, Conn, Uri, Data) when (Verb =:= post);
-                                                (Verb =:= put) ->
+generate_http_params(Verb, Conn, Uri, Data) when (Verb =:= get);
+                                                 (Verb =:= delete) ->
   Headers = get_headers(Verb),
   Body    = get_body(Verb, Data),
-  [Conn, Uri, Headers,Body, #{}];
+  [Conn, Uri, Headers, Body];
 generate_http_params(Verb, Conn, Uri, Data) ->
   Headers = get_headers(Verb),
   Body    = get_body(Verb, Data),
-  [Conn, Uri, Headers, Body].
+  [Conn, Uri, Headers, Body, #{}].
