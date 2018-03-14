@@ -58,12 +58,12 @@ efbdb Options
 
 `efbdb` options is a map that contains any or all of the items below:
 
-* `firebase_secret` _binary_ = defaults to blank if not specified
+* `firebase_secret :: binary` = defaults to blank if not specified
 
-* `update_callback` _{MODULE, FUNCTION}_ = callback function to handle additions and modifications on firebase db.
+* `update_callback :: {atom, atom}` = callback function to handle additions and modifications on firebase db.
   Defaults to the native handler, `firebasedb:on_update/2`
 
-* `remove_callback` _{MODULE, FUNCTION}_ = callback function to handle deletion on firebase db.
+* `remove_callback {atom, atom}` = callback function to handle deletion on firebase db.
   Defaults to the native handler, `firebasedb:on_remove/1`
 
 
