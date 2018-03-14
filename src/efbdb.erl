@@ -92,7 +92,7 @@ start_link(Host, Node, Opts) ->
   gen_server:start_link({local, ?MODULE}, ?MODULE, [{Host, Node, Opts}], []).
 
 init([{Host, Node, Opts}]) ->
-  Secret = utils:ensure_binary(maps:get(firebase_secret, Opts, <<"x">>)),
+  Secret = utils:ensure_binary(maps:get(firebase_secret, Opts, <<>>)),
   UpdateCallback = maps:get(update_callback, Opts, {firebasedb, on_update}),
   RemoveCallback = maps:get(remove_callback, Opts, {firebasedb, on_remove}),
   {ok, #state{
