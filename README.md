@@ -46,7 +46,7 @@ $> {ok, Conn} = efbdb:connect(_FIREBASE_HOST_, _FIREBASE_NODE_, _OPTIONS_)
 `efbdb:connect` has 3 arities.
 
 * `efbdb:connect/1` expects only the firebase host with firebase node defaults to "/".
-  Options will be discussed later.
+  Options discussed on the next section.
 
 * `efbdb:connect/2` expects both firebase host and node.
 
@@ -58,12 +58,12 @@ efbdb Options
 
 `efbdb` options is a map that contains any or all of the items below:
 
-* `firebase_secret` (binary) = defaults to blank if not specified
+* `firebase_secret` _binary_ = defaults to blank if not specified
 
-* `update_callback` ({MODULE, FUNCTION}) = callback function to handle additions and modifications on firebase db.
+* `update_callback` _{MODULE, FUNCTION}_ = callback function to handle additions and modifications on firebase db.
   Defaults to the native handler, `firebasedb:on_update/2`
 
-* `remove_callback` ({MODULE, FUNCTION}) = callback function to handle deletion on firebase db.
+* `remove_callback` _{MODULE, FUNCTION}_ = callback function to handle deletion on firebase db.
   Defaults to the native handler, `firebasedb:on_remove/1`
 
 
