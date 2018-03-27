@@ -1,7 +1,7 @@
 efbdb
 =====
 
-Firebase Database Client written in Erlang.
+Firebase Realtime Database Client written in Erlang.
 
 `efbdb` uses the concept of server-sent events to get realtime updates from Firebase DB.
 
