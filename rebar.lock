@@ -10,10 +10,10 @@
  {<<"jsx">>,{pkg,<<"jsx">>,<<"2.8.0">>},0},
  {<<"ranch">>,
   {git,"git://github.com/extend/ranch.git",
-       {ref,"55c2a9d623454f372a15e99721a37093d8773b48"}},
+       {ref,"fa608621bfedbb981657d2d09e2b321dddc0ad8e"}},
   2},
  {<<"shotgun">>,
-  {git,"git@git.corp.voyager.ph:eapesa/shotgun.git",
+  {git,"git@github.com:eapesa/shotgun.git",
        {ref,"b6b4f7ba56b079880fa0a5ddcf30ba411397a148"}},
   0}]}.
 [
